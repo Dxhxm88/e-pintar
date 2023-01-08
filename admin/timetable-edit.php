@@ -3,6 +3,14 @@ include('../config/include.php');
 
 include(asset('config/redirect.php'));
 include(asset('admin/controller/controller.php'));
+
+$class_timetable = getClassTimetable($_GET['class_id']);
+
+$timetable = generateTimetable($class_timetable);
+
+if (isset($_POST['submit'])) {
+    deleteTimetable($_POST, $_GET['class_id']);
+}
 ?>
 <html lang="en">
 
@@ -50,55 +58,34 @@ include(asset('admin/controller/controller.php'));
                 </div>
 
                 <div class="mb-2">
-                    <a href="<?= route('admin/timetable-view.php') ?>" class="btn btn-secondary">Back</a>
+                    <a href="<?= route('admin/timetable-view.php?class_id=' . $_GET['class_id']) ?>" class="btn btn-secondary">Back</a>
                 </div>
 
-                <form class="border rounded p-2">
+                <form class="border rounded p-2" method="post">
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Time</label>
-                        <input type="text" class="form-control" id="exampleInputEmail1">
+                        <select name="time" class="form-control" required>
+                            <option value="">Please select time</option>
+                            <?php for ($i=8; $i < 18; $i++) { ?>
+                                <option value="<?= $i ?>"><?= $i . ":00" ?></option>
+                            <?php } ?>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Day</label>
-                        <input type="text" class="form-control" id="exampleInputEmail1">
+                        <select name="day" class="form-control" required>
+                            <option value="">Please select time</option>
+                            <option value="monday">Monday</option>
+                            <option value="tuesday">Tuesday</option>
+                            <option value="wednesday">Wednesday</option>
+                            <option value="thursday">Thursday</option>
+                            <option value="friday">Friday</option>
+                        </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Remove</button>
+                    <button type="submit" name="submit" class="btn btn-primary">Remove</button>
                 </form>
 
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Time</th>
-                        <th>Monday</th>
-                        <th>Tuesday</th>
-                        <th>Wednesday</th>
-                        <th>Thursday</th>
-                        <th>Friday</th>
-                    </tr>
-                    <tr>
-                        <td>9:00</td>
-                        <td>Math</td>
-                        <td>Science</td>
-                        <td>English</td>
-                        <td>History</td>
-                        <td>PE</td>
-                    </tr>
-                    <tr>
-                        <td>10:00</td>
-                        <td>Math</td>
-                        <td>Science</td>
-                        <td>English</td>
-                        <td>History</td>
-                        <td>PE</td>
-                    </tr>
-                    <tr>
-                        <td>11:00</td>
-                        <td>Math</td>
-                        <td>Science</td>
-                        <td>English</td>
-                        <td>History</td>
-                        <td>PE</td>
-                    </tr>
-                </table>
+                <?= $timetable ?>
             </main>
         </div>
     </div>

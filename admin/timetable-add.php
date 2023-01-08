@@ -3,6 +3,17 @@ include('../config/include.php');
 
 include(asset('config/redirect.php'));
 include(asset('admin/controller/controller.php'));
+
+$class_timetable = getClassTimetable($_GET['class_id']);
+
+$timetable = generateTimetable($class_timetable);
+
+$subjects = getSubjects();
+
+if (isset($_POST['submit'])) {
+    print_r($_POST);
+    addDataTimetable($_POST, $_GET['class_id']);
+}
 ?>
 <html lang="en">
 
@@ -50,68 +61,49 @@ include(asset('admin/controller/controller.php'));
                 </div>
 
                 <div class="mb-2">
-                    <a href="<?= route('admin/timetable-view.php') ?>" class="btn btn-secondary">Back</a>
+                    <a href="<?= route('admin/timetable-view.php?class_id=' . $_GET['class_id']) ?>" class="btn btn-secondary">Back</a>
                 </div>
 
-                <form class="border rounded p-2">
+                <form class="border rounded p-2" method="post">
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Time</label>
-                        <input type="text" class="form-control" id="exampleInputEmail1">
+                        <select name="time" class="form-control" required>
+                            <option value="">Please select time</option>
+                            <?php for ($i=8; $i < 18; $i++) { ?>
+                                <option value="<?= $i ?>"><?= $i . ":00" ?></option>
+                            <?php } ?>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Day</label>
-                        <input type="text" class="form-control" id="exampleInputEmail1">
+                        <select name="day" class="form-control" required>
+                            <option value="">Please select time</option>
+                            <option value="monday">Monday</option>
+                            <option value="tuesday">Tuesday</option>
+                            <option value="wednesday">Wednesday</option>
+                            <option value="thursday">Thursday</option>
+                            <option value="friday">Friday</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Subject</label>
-                        <input type="text" class="form-control" id="exampleInputEmail1">
+                        <select name="subject" class="form-control" required>
+                            <option value="">Please select subject</option>
+                            <?php foreach ($subjects as $subject) { ?>
+                                <option value="<?= $subject['id'] ?>"><?= $subject['name'] ?></option>
+                            <?php } ?>
+                        </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="submit" name="submit" class="btn btn-primary">Add</button>
                 </form>
 
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Time</th>
-                        <th>Monday</th>
-                        <th>Tuesday</th>
-                        <th>Wednesday</th>
-                        <th>Thursday</th>
-                        <th>Friday</th>
-                    </tr>
-                    <tr>
-                        <td>9:00</td>
-                        <td>Math</td>
-                        <td>Science</td>
-                        <td>English</td>
-                        <td>History</td>
-                        <td>PE</td>
-                    </tr>
-                    <tr>
-                        <td>10:00</td>
-                        <td>Math</td>
-                        <td>Science</td>
-                        <td>English</td>
-                        <td>History</td>
-                        <td>PE</td>
-                    </tr>
-                    <tr>
-                        <td>11:00</td>
-                        <td>Math</td>
-                        <td>Science</td>
-                        <td>English</td>
-                        <td>History</td>
-                        <td>PE</td>
-                    </tr>
-                </table>
+                <?= $timetable ?>
             </main>
         </div>
     </div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
-    <script src="dashboard.js"></script>
 </body>
 
 </html>

@@ -3,6 +3,8 @@ include('../config/include.php');
 
 include(asset('config/redirect.php'));
 include(asset('admin/controller/controller.php'));
+
+$classes = getClasses();
 ?>
 <html lang="en">
 
@@ -59,22 +61,16 @@ include(asset('admin/controller/controller.php'));
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>5 Alpha</td>
-                            <td>12/22/2020</td>
-                            <td>
-                                <a href="<?= route('admin/kelas-edit.php') ?>" class="btn btn-primary">Edit</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>3 Alpha</td>
-                            <td>12/22/2020</td>
-                            <td>
-                                <a href="<?= route('admin/kelas-edit.php') ?>" class="btn btn-primary">Edit</a>
-                            </td>
-                        </tr>
+                        <?php foreach ($classes as $kelas) { ?>
+                            <tr>
+                                <th scope="row"><?= $kelas['id'] ?></th>
+                                <td><?= $kelas['name'] ?></td>
+                                <td><?= $kelas['created'] ?></td>
+                                <td>
+                                    <a href="<?= route('admin/kelas-edit.php?class_id=' . $kelas['id'] ) ?>" class="btn btn-primary">Edit</a>
+                                </td>
+                            </tr>
+                         <?php } ?>
                     </tbody>
                 </table>
             </main>

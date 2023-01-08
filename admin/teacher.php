@@ -5,6 +5,10 @@ include(asset('config/redirect.php'));
 include(asset('admin/controller/controller.php'));
 
 $teachers = getTeachers();
+
+if (isset($_GET['delete'])) {
+    deleteTeacher($_GET['delete']);
+}
 ?>
 <html lang="en">
 

@@ -3,6 +3,8 @@ include('../config/include.php');
 
 include(asset('config/redirect.php'));
 include(asset('admin/controller/controller.php'));
+
+$query = getTeacherQuery($_GET['teacher_id']);
 ?>
 <html lang="en">
 
@@ -59,20 +61,20 @@ include(asset('admin/controller/controller.php'));
                             <th scope="col">Email</th>
                             <th scope="col">Phone</th>
                             <th scope="col">Date</th>
-                            <th scope="col"></th>
+                            <th scope="col">Message</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>John</td>
-                            <td>john@gmail.com</td>
-                            <td>01223545687</td>
-                            <td>12/22/2020</td>
-                            <td>
-                                <a href="<?= route('admin/teacher-query-view.php') ?>" class="btn btn-primary">View</a>
-                            </td>
-                        </tr>
+                        <?php foreach ($query as $q) { ?>
+                            <tr>
+                                <th scope="row"><?= $q['id'] ?></th>
+                                <td><?= $q['name'] ?></td>
+                                <td><?= $q['email'] ?></td>
+                                <td><?= $q['phone'] ?></td>
+                                <td><?= $q['created'] ?></td>
+                                <td><?= $q['message'] ?></td>
+                            </tr>
+                        <?php } ?>
                     </tbody>
                 </table>
             </main>

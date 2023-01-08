@@ -1,5 +1,15 @@
 <?php
 include('../config/include.php');
+include(asset('config/redirect.php'));
+include(asset('teacher/controller/controller.php'));
+
+$profile = getProfile();
+$subjects = getSubjects();
+
+if (isset($_POST['submit'])) {
+    $_POST['photo'] = $_FILES['photo'];
+    editProfile($_POST);
+}
 ?>
 <html lang="en">
 
@@ -38,33 +48,33 @@ include('../config/include.php');
                     <h1 class="h2">Profile</h1>
                 </div>
 
-                <div class="row mb-3">
-                    <div class="col-lg-6">
-                        <div class="card">
-                            <div class="card-header"><strong>Teacher</strong><small> Personal Details</small></div>
-                            <form name="" method="post" action="" enctype="multipart/form-data">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="row mb-3">
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header"><strong>Teacher</strong><small> Personal Details</small></div>
                                 <div class="card-body card-block">
                                     <div class="form-group">
-                                        <label for="company" class=" form-control-label">Teacher Name</label>
-                                        <input type="text" name="tname" value="John" class="form-control" id="tname" required="true">
+                                        <label for="company" class=" form-control-label">Name</label>
+                                        <input type="text" name="name" value="<?= $profile['name'] ?>" class="form-control" required="true">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="company" class=" form-control-label">Teacher Photo</label> &nbsp;
-                                        <img src="<?= route('img/teacher.jpg') ?>" width="100" height="100" class="mt-2">
-                                        <a href="changeimage.php"> &nbsp; Edit Image</a>
+                                        <label for="company" class=" form-control-label">Photo</label> &nbsp;
+                                        <img src="<?= route($profile['photo']) ?>" width="100" height="100" class="mt-2">
+                                        <input type="file" name="photo" class="form-control mt-2">
                                     </div>
 
                                     <div class="form-group mb-2">
-                                        <label for="street" class=" form-control-label">Teacher Email</label>
-                                        <input type="text" name="email" value="john@email.com" id="email" class="form-control" required="true">
+                                        <label for="street" class=" form-control-label">Email</label>
+                                        <input type="text" name="email" value="<?= $profile['email'] ?>" class="form-control" required="true">
                                     </div>
 
                                     <div class="row form-group mb-2">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="city" class=" form-control-label">Teacher Mobile Number</label>
-                                                <input type="text" name="mobilenumber" id="mobilenumber" value="012355555" class="form-control" required="true" maxlength="10">
+                                                <label for="city" class=" form-control-label">Phone</label>
+                                                <input type="text" name="phone" value="<?= $profile['phone'] ?>" class="form-control" required="true">
                                             </div>
                                         </div>
                                     </div>
@@ -72,8 +82,8 @@ include('../config/include.php');
                                     <div class="row form-group mb-2">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="city" class=" form-control-label">Teacher Address</label>
-                                                <textarea type="text" name="address" id="address" class="form-control" rows="3" cols="12" required="true">North Dakota</textarea>
+                                                <label for="city" class=" form-control-label">Address</label>
+                                                <textarea type="text" name="address" class="form-control" rows="3" cols="12" required="true"><?= $profile['address'] ?></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -81,24 +91,23 @@ include('../config/include.php');
                                     <div class="row form-group mb-2">
                                         <div class="col-12">
                                             <div class="form-group"><label for="city" class=" form-control-label">Joining Date</label>
-                                                <input type="date" name="joiningdate" id="joiningdate" value="2000" class="form-control" required="true">
+                                                <input type="date" name="created" id="joiningdate" value="<?= $profile['created'] ?>" class="form-control" required="true">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-lg-6">
-                        <div class="card">
-                            <div class="card-header"><strong>Teacher</strong><small> Professional Details</small></div>
-                            <form name="" method="post" action="" enctype="multipart/form-data">
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header"><strong>Teacher</strong><small> Professional Details</small></div>
                                 <div class="card-body card-block">
                                     <div class="row form-group">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="city" class=" form-control-label">Teacher Qualifications</label>
-                                                <input type="text" name="qualifications" id="qualifications" value="Master" class="form-control" required="true">
+                                                <label for="city" class=" form-control-label">Qualifications</label>
+                                                <input type="text" name="qualification" value="<?= $profile['qualification'] ?>" class="form-control" required="true">
                                             </div>
                                         </div>
                                     </div>
@@ -107,16 +116,18 @@ include('../config/include.php');
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="city" class=" form-control-label">Teaching Experience (in Years)</label>
-                                                <input type="text" name="teachingexp" id="teachingexp" pattern="[0-9]+" title="only numbers" value="20" class="form-control" required="true">
+                                                <input type="text" name="experience" value="<?= $profile['experience'] ?>" class="form-control" required="true">
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="row form-group">
                                         <div class="col-12">
-                                            <div class="form-group"><label for="city" class=" form-control-label">Teacher Subjects</label>
-                                                <select type="text" name="tsubjects" id="tsubjects" value="" class="form-control" required="true">
-                                                    <option value="">Science</option>
+                                            <div class="form-group"><label for="city" class=" form-control-label">Teaching Subjects</label>
+                                                <select type="text" name="subject" class="form-control" required="true">
+                                                    <?php foreach ($subjects as $subject) { ?>
+                                                        <option value="<?= $subject['id'] ?>" <?= $profile['subject_id'] == $subject['id'] ? "selected" : "" ?>><?= $subject['name'] ?></option>
+                                                    <?php } ?>
                                                 </select>
                                             </div>
                                         </div>
@@ -126,7 +137,7 @@ include('../config/include.php');
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="city" class=" form-control-label">Description (if Any)</label>
-                                                <textarea type="text" name="description" id="description" class="form-control" rows="3" cols="12" required="true">No description</textarea>
+                                                <textarea type="text" name="description" class="form-control" rows="3" cols="12" required="true"><?= $profile['description'] ?></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -135,9 +146,9 @@ include('../config/include.php');
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="city" class=" form-control-label">Profile Status <small style="color:red">(Public profile anybody can your details and not public only you can view)</small></label>
-                                                <select type="text" name="status" id="status" value="" class="form-control" required="true">
-                                                    <option value="1">Public</option>
-                                                    <option value="0">Not public</option>
+                                                <select type="text" name="status" class="form-control" required="true">
+                                                    <option value="public" <?= $profile['status'] == "public" ? "selected" : "" ?>>Public</option>
+                                                    <option value="not public" <?= $profile['status'] == "not public" ? "selected" : "" ?>>Not public</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -145,16 +156,13 @@ include('../config/include.php');
 
                                 </div>
                                 <p style="text-align: center;"><button type="submit" class="btn btn-primary btn-sm" name="submit" id="submit"><i class="fa fa-dot-circle-o"></i> Update</button></p>
+                            </div>
                         </div>
-                        </form>
                     </div>
-                </div>
+                </form>
             </main>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
 </body>
 
 </html>

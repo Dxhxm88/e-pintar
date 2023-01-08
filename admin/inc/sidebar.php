@@ -49,17 +49,7 @@
                     </ul>
                 </div>
             </li>
-            <li class="nav-item mb-2">
-                <a class="nav-link link-dark dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#report-dropdown" aria-expanded="false">
-                    <i class="bi bi-archive pe-3"></i> Report
-                </a>
-                <div class="collapse" id="report-dropdown">
-                    <ul class="nav flex-column">
-                        <li class="nav-item ms-2"><a href="<?= route('admin/report-timetable.php') ?>" class="nav-link link-dark">Timetable</a></li>
-                        <li class="nav-item ms-2"><a href="<?= route('admin/report-class.php') ?>" class="nav-link link-dark">Class/Subject</a></li>
-                    </ul>
-                </div>
-            </li>
+
         </ul>
     </div>
 </nav>

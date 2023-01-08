@@ -3,6 +3,10 @@ include('../config/include.php');
 
 include(asset('config/redirect.php'));
 include(asset('admin/controller/controller.php'));
+
+$class_timetable = getClassTimetable($_GET['class_id']);
+
+$timetable = generateTimetable($class_timetable);
 ?>
 <html lang="en">
 
@@ -43,44 +47,12 @@ include(asset('admin/controller/controller.php'));
 
                 <div class="mb-2">
                     <a href="<?= route('admin/timetable.php') ?>" class="btn btn-secondary">Back</a>
-                    <a href="<?= route('admin/timetable-add.php') ?>" class="btn btn-primary">Add data</a>
-                    <a href="<?= route('admin/timetable-edit.php') ?>" class="btn btn-danger">Remove data</a>
+                    <a href="<?= route('admin/timetable-add.php?class_id=' .  $_GET['class_id']) ?>" class="btn btn-primary">Add data</a>
+                    <a href="<?= route('admin/timetable-edit.php?class_id=' . $_GET['class_id']) ?>" class="btn btn-danger">Remove data</a>
                 </div>
 
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Time</th>
-                        <th>Monday</th>
-                        <th>Tuesday</th>
-                        <th>Wednesday</th>
-                        <th>Thursday</th>
-                        <th>Friday</th>
-                    </tr>
-                    <tr>
-                        <td>9:00</td>
-                        <td>Math</td>
-                        <td>Science</td>
-                        <td></td>
-                        <td>History</td>
-                        <td>PE</td>
-                    </tr>
-                    <tr>
-                        <td>10:00</td>
-                        <td>Math</td>
-                        <td>Science</td>
-                        <td>English</td>
-                        <td>History</td>
-                        <td>PE</td>
-                    </tr>
-                    <tr>
-                        <td>11:00</td>
-                        <td>Math</td>
-                        <td>Science</td>
-                        <td>English</td>
-                        <td>History</td>
-                        <td>PE</td>
-                    </tr>
-                </table>
+                <?= $timetable ?>
+                
             </main>
         </div>
     </div>

@@ -3,6 +3,10 @@ include('../config/include.php');
 
 include(asset('config/redirect.php'));
 include(asset('admin/controller/controller.php'));
+
+if (isset($_POST['submit'])) {
+    addClass($_POST);
+}
 ?>
 <html lang="en">
 
@@ -49,12 +53,12 @@ include(asset('admin/controller/controller.php'));
                     <h1 class="h2">Add Class</h1>
                 </div>
 
-                <form class="border rounded p-2">
+                <form class="border rounded p-2" method="post">
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="exampleInputEmail1">
+                        <input type="text" class="form-control" name="name">
                     </div>
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="submit" class="btn btn-primary" name="submit">Add</button>
                 </form>
             </main>
         </div>

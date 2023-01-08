@@ -91,7 +91,7 @@ function getTotalTeachersPublic()
 
 function getTotalTeachersNotPublic()
 {
-    $query = "SELECT * FROM teachers WHERE status='Not Public'";
+    $query = "SELECT * FROM teachers WHERE status='not public'";
     $result = mysqlj($query);
 
     return $result->num_rows;
@@ -160,7 +160,7 @@ function getTeachers()
 {
     $results = array();
 
-    $query = "SELECT teachers.*, subjects.name as subject_name FROM teachers INNER JOIN subjects ON teachers.subject_id= subjects.id";
+    $query = "SELECT teachers.*, subjects.name as subject_name FROM teachers INNER JOIN subjects ON teachers.subject_id= subjects.id ORDER BY id  asc";
     $result = mysqlj($query);
 
     if ($result->num_rows > 0) {
@@ -210,8 +210,8 @@ function updateTeacher($data, $id)
 
     if ($hasImage) {
         $query = "UPDATE teachers SET name='$name', email='$email', phone='$phone', address='$address', qualification='$qualification', 
-        experience='$experience', subject_id='$subject', description='$description', created='$created', image='$path' WHERE id = $id";
-    }else{
+        experience='$experience', subject_id='$subject', description='$description', created='$created', photo='$path' WHERE id = $id";
+    } else {
         $query = "UPDATE teachers SET name='$name', email='$email', phone='$phone', address='$address', qualification='$qualification', 
         experience='$experience', subject_id='$subject', description='$description', created='$created' WHERE id = $id";
     }
@@ -243,4 +243,252 @@ function uploadAndGetPath($image_tmp_name, $image_name)
     move_uploaded_file($image_tmp_name, asset($image_path));
 
     return $image_path;
+}
+
+function getTeacherQuery($id)
+{
+    $results = array();
+
+    $query = "SELECT * FROM query WHERE teacher_id=$id";
+    $result = mysqlj($query);
+
+    if ($result->num_rows > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $results[] = $row;
+        }
+    }
+
+    return $results;
+}
+
+function addTeacher($data)
+{
+    $name = $data['name'];
+    $email = $data['email'];
+    $phone = $data['phone'];
+    $address = $data['address'];
+    $qualification = $data['qualification'];
+    $experience = $data['experience'];
+    $subject = $data['subject'];
+    $description = $data['description'];
+    $created = $data['created'];
+
+    $image = $data['photo'];
+    $image_name = $image['name'];
+    $image_tmp_name = $image['tmp_name'];
+    $image_type = $image['type'];
+    if (checkImage($image_type)) {
+        $path = uploadAndGetPath($image_tmp_name, $image_name);
+    } else {
+        alert("Please upload image type only");
+        return;
+    }
+
+    $query = "INSERT INTO teachers (name,email, phone, address, qualification, experience, subject_id, description, created, photo) VALUES 
+    ('$name', '$email', '$phone', '$address', '$qualification', '$experience', '$subject', '$description', '$created', '$path')";
+    $result = mysqlj($query);
+
+    // Check if the UPDATE statement was successful
+    if ($result) {
+        alert("Teacher added successfully.");
+        redirect(route('admin/teacher.php'));
+    } else {
+        alert("Error add teacher");
+    }
+}
+
+function deleteTeacher($id)
+{
+    global $conn;
+    $query = "DELETE FROM teachers WHERE id=$id";
+    $result = mysqlj($query);
+
+    // Check if the DELETE statement was successful
+    if ($result) {
+        alert("Teacher was deleted successfully.");
+        redirect(route('admin/teacher.php'));
+    } else {
+        $ms = "Error deleting teacher: " . mysqli_error($conn);
+        alert($ms);
+    }
+}
+
+function getClasses()
+{
+    $results = array();
+
+    $query = "SELECT * FROM kelas";
+    $result = mysqlj($query);
+
+    if ($result->num_rows > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $results[] = $row;
+        }
+    }
+
+    return $results;
+}
+
+function addClass($data)
+{
+    $name = $data['name'];
+    $created = date("Y-m-d");
+
+    $query = "INSERT INTO kelas (name,created) VALUES ('$name', '$created')";
+    $result = mysqlj($query);
+
+    // Check if the UPDATE statement was successful
+    if ($result) {
+        alert("Class added successfully.");
+        redirect(route('admin/kelas.php'));
+    } else {
+        alert("Error add class");
+    }
+}
+
+function getClass($id)
+{
+    $query = "SELECT * FROM kelas WHERE id=$id";
+    $result = mysqlj($query);
+
+    return mysqli_fetch_assoc($result);
+}
+
+function updateClass($data, $id)
+{
+    $name = $data['name'];
+
+    $query = "UPDATE kelas SET name='$name' WHERE id = $id";
+    $result = mysqlj($query);
+
+    // Check if the UPDATE statement was successful
+    if ($result) {
+        alert("Class updated successfully.");
+        redirect(route('admin/kelas.php'));
+    } else {
+        alert("Error updating class");
+    }
+}
+
+function getClassTimetable($id)
+{
+    $results = array();
+
+    $query = "SELECT timetables.*, subjects.name as subject_name FROM timetables INNER JOIN subjects ON timetables.subject_id=subjects.id WHERE class_id=$id";
+    $result = mysqlj($query);
+
+    if ($result->num_rows > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $results[] = $row;
+        }
+    }
+
+    return $results;
+}
+
+function generateTimetable($data)
+{
+    $slot = array();
+    $output =  "<table class='table table-bordered'>
+    <thead>
+        <tr>
+            <th>Time</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+        </tr>
+    </thead>
+    <tbody>";
+
+    foreach ($data as $t) {
+        $slot[$t['time']][$t['day']] = $t['subject_name'];
+    }
+
+    // return $slot;
+
+    for ($i=8; $i<18; $i++) {
+        $output .= "<tr>";
+        $time = $i . ":00";
+        $as = isset($slot[$i]) ? $slot[$i] : null;
+        $monday = isset($as['monday']) ? $as['monday'] : " ";
+        $tuesday = isset($as['tuesday']) ? $as['tuesday'] : " ";
+        $wednesday = isset($as['wednesday']) ? $as['wednesday'] : " ";
+        $thursday = isset($as['thursday']) ? $as['thursday'] : " ";
+        $friday = isset($as['friday']) ? $as['friday'] : " ";
+        $output .= "
+                    <td class='text-center fw-bold'>$time</td>
+                    <td>$monday</td>
+                    <td>$tuesday</td>
+                    <td>$wednesday</td>
+                    <td>$thursday</td>
+                    <td>$friday</td>
+                    ";
+
+        $output .= "</tr>";
+        
+    }
+
+    $output.= "</tbody></table>";
+    return $output;
+}
+
+function addDataTimetable($data, $id)
+{
+    $time = $data['time'];
+    $day = $data['day'];
+    $subject = $data['subject'];
+
+    if (checkSlot($data, $id)) {
+        alert("Slot not available");
+        return;
+    }
+
+    $query = "INSERT INTO timetables (time,day, subject_id, class_id) VALUES ('$time', '$day', '$subject', $id)";
+    $result = mysqlj($query);
+
+    // Check if the UPDATE statement was successful
+    if ($result) {
+        alert("Timetable added successfully.");
+        redirect(route('admin/timetable-view.php?class_id=' . $id));
+    } else {
+        alert("Error add timetable");
+    }
+}
+
+function deleteTimetable($data, $id)
+{
+    global $conn;
+    $time = $data['time'];
+    $day = $data['day'];
+
+    if (!checkSlot($data, $id)) {
+        alert("Slot not exist");
+        return;
+    }
+
+    $query = "DELETE FROM timetables WHERE time='$time' AND day='$day' AND class_id=$id";
+    $result = mysqlj($query);
+
+    // Check if the DELETE statement was successful
+    if ($result) {
+        alert("Data was deleted successfully.");
+        redirect(route('admin/timetable-view.php?class_id=' . $id));
+    } else {
+        $ms = "Error deleting data: " . mysqli_error($conn);
+        alert($ms);
+    }
+
+}
+
+function checkSlot($data, $id)
+{
+    $time = $data['time'];
+    $day = $data['day'];
+
+    $query = "SELECT * FROM timetables WHERE class_id=$id AND time='$time' AND day='$day'";
+    $result = mysqlj($query);
+
+    return $result->num_rows > 0 ? true: false;
 }

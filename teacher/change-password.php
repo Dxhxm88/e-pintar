@@ -1,5 +1,11 @@
 <?php
 include('../config/include.php');
+include(asset('config/redirect.php'));
+include(asset('teacher/controller/controller.php'));
+
+if (isset($_POST['submit'])) {
+    changepassword($_POST);
+}
 ?>
 <html lang="en">
 
@@ -41,20 +47,20 @@ include('../config/include.php');
 
                 <div class="row">
                     <div class="col-lg-12">
-                        <form name="changepassword" class="form-control" method="post" action="">
+                        <form name="chngpwd" class="form-control" method="post" onsubmit="return valid()">
                             <div class="form-group">
                                 <label for="company" class=" form-control-label">Current Password</label>
-                                <input type="password" name="currentpassword" id="currentpassword" class="form-control" required="">
+                                <input type="password" name="cpass" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="vat" class=" form-control-label">New Password</label>
-                                <input type="password" name="newpassword" class="form-control" required="">
+                                <input type="password" name="npass" class="form-control" required>
                             </div>
                             <div class="form-group mb-2">
                                 <label for="street" class=" form-control-label">Confirm Password</label>
-                                <input type="password" name="confirmpassword" id="confirmpassword" value="" class="form-control">
+                                <input type="password" name="cnpass" class="form-control" required>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-sm" name="submit" id="submit">Change</button>
+                            <button type="submit" class="btn btn-primary btn-sm" name="submit">Change</button>
                         </form>
                     </div>
                 </div>
@@ -62,9 +68,28 @@ include('../config/include.php');
             </main>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        function valid() {
+            if (document.chngpwd.cpass.value == "") {
+                alert("Current Password Filed is Empty !!");
+                document.chngpwd.cpass.focus();
+                return false;
+            } else if (document.chngpwd.npass.value == "") {
+                alert("New Password Filed is Empty !!");
+                document.chngpwd.npass.focus();
+                return false;
+            } else if (document.chngpwd.cnpass.value == "") {
+                alert("Confirm Password Filed is Empty !!");
+                document.chngpwd.cnpass.focus();
+                return false;
+            } else if (document.chngpwd.npass.value != document.chngpwd.cnpass.value) {
+                alert("Password and Confirm Password Field do not match  !!");
+                document.chngpwd.cnpass.focus();
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 
 </html>

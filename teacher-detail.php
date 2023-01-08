@@ -1,5 +1,12 @@
 <?php
 include('config/include.php');
+include(asset('teacher/controller/controller.php'));
+
+$teacher = getTeacher($_GET['teacher_id']);
+
+if (isset($_POST['submit'])) {
+    addQuery($_POST, $_GET['teacher_id']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,8 +31,8 @@ include('config/include.php');
         <section class="py-5">
             <div class="container px-5 my-5">
                 <div class="text-center mb-5">
-                    <h1 class="fw-bolder">John's Details</h1>
-                    <p class="lead fw-normal text-muted mb-0">Registered Since 2000</p>
+                    <h1 class="fw-bolder"><?= $teacher['name'] ?>'s Details</h1>
+                    <p class="lead fw-normal text-muted mb-0">Registered Since <?= substr($teacher['created'], 0 ,4) ?></p>
                 </div>
                 <div class="row gx-5">
                     <div class="col-xl-8">
@@ -38,29 +45,29 @@ include('config/include.php');
 
                                             <tr>
                                                 <th></th>
-                                                <td><img src="<?= route('img/teacher.jpg') ?>" width="200"></td>
+                                                <td><img src="<?= route($teacher['photo']) ?>" width="200"></td>
                                             </tr>
                                             <tr>
                                                 <th>Teacher Name</th>
-                                                <td>John</td>
+                                                <td><?= $teacher['name'] ?></td>
                                             </tr>
 
                                             <tr>
                                                 <th>Teacher Email ID</th>
-                                                <td>jhon@email.com</td>
+                                                <td><?= $teacher['email'] ?></td>
                                             </tr>
 
                                             <tr>
                                                 <th>Teacher Mobile Number</th>
-                                                <td>012947464</td>
+                                                <td><?= $teacher['phone'] ?></td>
                                             </tr>
                                             <tr>
                                                 <th>Teacher Address</th>
-                                                <td>North Dakota</td>
+                                                <td><?= $teacher['address'] ?></td>
                                             </tr>
                                             <tr>
                                                 <th>Registered Since</th>
-                                                <td>2000</td>
+                                                <td><?= substr($teacher['created'], 0 ,4) ?></td>
                                             </tr>
                                         </table>
                                     </div>
@@ -79,21 +86,21 @@ include('config/include.php');
                                         <table class="table table-bordered">
                                             <tr>
                                                 <th>Teacher Qualifications</th>
-                                                <td>Degree</td>
+                                                <td><?= $teacher['qualification'] ?></td>
                                             </tr>
 
                                             <tr>
                                                 <th>Teaching Experience (in Years)</th>
-                                                <td>10</td>
+                                                <td><?= $teacher['experience'] ?></td>
                                             </tr>
 
                                             <tr>
                                                 <th>Teacher Subject</th>
-                                                <td>Science</td>
+                                                <td><?= $teacher['subject_name'] ?></td>
                                             </tr>
                                             <tr>
                                                 <th>Description (if Any)</th>
-                                                <td>Good to student</td>
+                                                <td><?= $teacher['description'] ?></td>
                                             </tr>
                                         </table>
                                     </div>
@@ -110,14 +117,14 @@ include('config/include.php');
                                         <p class="text-muted mb-4">
                                             Contact me at
                                             <br />
-                                            <a href="#!">john@rmail.com</a>
+                                            <a href="#!"><?= $teacher['email'] ?></a>
                                         </p>
                                         <h5>OR</h5>
                                         <form method="post">
-                                            <p> <input type="text" name="fname" placeholder="Enter your fullname" class="form-control" required></p>
-                                            <p><input type="email" name="emailid" placeholder="Enter your emaild" class="form-control" required></p>
-                                            <p><input type="text" name="mobileno" placeholder="Enter your mobile no" class="form-control" pattern="[0-9]{10}" title="10 numeric characters only" required></p>
-                                            <p><textarea class="form-control" name="query" placeholder="Query / Message" required></textarea>
+                                            <p> <input type="text" name="name" placeholder="Enter your fullname" class="form-control" required></p>
+                                            <p><input type="email" name="email" placeholder="Enter your emaild" class="form-control" required></p>
+                                            <p><input type="text" name="phone" placeholder="Enter your mobile no" class="form-control"  required></p>
+                                            <p><textarea class="form-control" name="message" placeholder="Query / Message" required></textarea>
                                             </p>
                                             <input type="submit" class="btn btn-primary" name="submit">
                                         </form>

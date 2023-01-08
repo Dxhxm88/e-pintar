@@ -1,5 +1,11 @@
 <?php
 include('../config/include.php');
+include(asset('config/redirect.php'));
+include(asset('teacher/controller/controller.php'));
+
+if (isset($_GET['logout'])) {
+    logout();
+}
 ?>
 <html lang="en">
 
@@ -47,16 +53,20 @@ include('../config/include.php');
                     <h1 class="h2">Dashboard</h1>
                 </div>
 
-                <div class="mb-4 rounded-3 bg-warning">
+                <div class="mb-4 rounded-3 <?= $_SESSION['status'] == "public" ? 'bg-success text-light' : 'bg-warning' ?>">
                     <div class="container-fluid py-5">
-                        <h4 class="fw-bold">Welcome back, John!</h4>
-                        <p class="col-md-8">Your profile not public, student cannot see your profile yet</p>
+                        <h4 class="fw-bold">Welcome back, <?= $_SESSION['name'] ?>!</h4>
+                        <?php if ($_SESSION['status'] == 'public') { ?>
+                            <p class="col-md-8">Your profile is public, student can see your profile</p>
+                        <?php }else { ?>
+                            <p class="col-md-8">Your profile not public, student cannot see your profile yet</p>
+                        <?php } ?>
                     </div>
                 </div>
 
                 <div class="mb-4 rounded-3 bg-info">
                     <div class="container-fluid py-5">
-                        <h4 class="fw-bold">0</h4>
+                        <h4 class="fw-bold"><?= getTotalQuery() ?></h4>
                         <p class="col-md-8">Total query received</p>
                     </div>
                 </div>

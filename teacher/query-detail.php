@@ -1,5 +1,6 @@
 <?php
-include('../config/include.php');
+include(asset('config/redirect.php'));
+include(asset('teacher/controller/controller.php'));
 ?>
 <html lang="en">
 

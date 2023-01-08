@@ -1,5 +1,9 @@
 <?php
 include('../config/include.php');
+include(asset('config/redirect.php'));
+include(asset('teacher/controller/controller.php'));
+
+$queries = getQueries();
 ?>
 <html lang="en">
 
@@ -45,24 +49,19 @@ include('../config/include.php');
                             <th scope="col">Name</th>
                             <th scope="col">Email</th>
                             <th scope="col">Phone</th>
-                            <th></th>
+                            <th scope="col">Message</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td><a href="<?=  route('teacher/query-detail.php') ?>" class="btn btn-primary">View</a></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                            <td><a href="<?= route('teacher/query-detail.php') ?>" class="btn btn-primary">View</a></td>
-                        </tr>
+                        <?php foreach ($queries as $query) { ?>
+                            <tr>
+                                <th scope="row"><?= $query['id'] ?></th>
+                                <td><?= $query['name'] ?></td>
+                                <td><?= $query['email'] ?></td>
+                                <td><?= $query['phone'] ?></td>
+                                <td><?= $query['message'] ?></td>
+                            </tr>
+                        <?php } ?>
                     </tbody>
                 </table>
             </main>
