@@ -127,7 +127,7 @@ function editProfile($data)
     $subject = $data['subject'];
     $description = $data['description'];
     $created = $data['created'];
-    $status = $data['statu'];
+    $status = $data['status'];
     $hasImage = false;
 
     $image = $data['photo'];
