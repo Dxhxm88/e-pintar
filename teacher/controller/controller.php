@@ -289,3 +289,18 @@ function addQuery($data, $id)
         alert("Error add message");
     }
 }
+
+function getStatus()
+{
+    $id = $_SESSION['id'];
+
+    $query = "SELECT * FROM teachers WHERE id=$id";
+    $result = mysqlj($query);
+
+    $row = mysqli_fetch_assoc($result);
+    if ($row['status'] == "public") {
+        return true;
+    }
+
+    return false;
+}

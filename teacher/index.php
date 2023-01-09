@@ -56,7 +56,7 @@ if (isset($_GET['logout'])) {
                 <div class="mb-4 rounded-3 <?= $_SESSION['status'] == "public" ? 'bg-success text-light' : 'bg-warning' ?>">
                     <div class="container-fluid py-5">
                         <h4 class="fw-bold">Welcome back, <?= $_SESSION['name'] ?>!</h4>
-                        <?php if ($_SESSION['status'] == 'public') { ?>
+                        <?php if (getStatus()) { ?>
                             <p class="col-md-8">Your profile is public, student can see your profile</p>
                         <?php }else { ?>
                             <p class="col-md-8">Your profile not public, student cannot see your profile yet</p>
@@ -74,8 +74,6 @@ if (isset($_GET['logout'])) {
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
 </body>
 
 </html>
