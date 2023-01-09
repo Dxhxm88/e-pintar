@@ -53,7 +53,7 @@ if (isset($_GET['logout'])) {
                     <h1 class="h2">Dashboard</h1>
                 </div>
 
-                <div class="mb-4 rounded-3 <?= $_SESSION['status'] == "public" ? 'bg-success text-light' : 'bg-warning' ?>">
+                <div class="mb-4 rounded-3 <?= getStatus() ? 'bg-success text-light' : 'bg-warning' ?>">
                     <div class="container-fluid py-5">
                         <h4 class="fw-bold">Welcome back, <?= $_SESSION['name'] ?>!</h4>
                         <?php if (getStatus()) { ?>
