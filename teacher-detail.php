@@ -122,7 +122,7 @@ if (isset($_POST['submit'])) {
                                         <h5>OR</h5>
                                         <form method="post">
                                             <p> <input type="text" name="name" placeholder="Enter your fullname" class="form-control" required></p>
-                                            <p><input type="email" name="email" placeholder="Enter your emaild" class="form-control" required></p>
+                                            <p><input type="email" name="email" placeholder="Enter your email" class="form-control" required></p>
                                             <p><input type="text" name="phone" placeholder="Enter your mobile no" class="form-control"  required></p>
                                             <p><textarea class="form-control" name="message" placeholder="Query / Message" required></textarea>
                                             </p>
