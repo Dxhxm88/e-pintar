@@ -127,6 +127,7 @@ function editProfile($data)
     $subject = $data['subject'];
     $description = $data['description'];
     $created = $data['created'];
+    $status = $data['statu'];
     $hasImage = false;
 
     $image = $data['photo'];
@@ -146,10 +147,10 @@ function editProfile($data)
 
     if ($hasImage) {
         $query = "UPDATE teachers SET name='$name', email='$email', phone='$phone', address='$address', qualification='$qualification', 
-        experience='$experience', subject_id='$subject', description='$description', created='$created', photo='$path' WHERE id = $id";
+        experience='$experience', subject_id='$subject', description='$description', created='$created', photo='$path', status='$status' WHERE id = $id";
     } else {
         $query = "UPDATE teachers SET name='$name', email='$email', phone='$phone', address='$address', qualification='$qualification', 
-        experience='$experience', subject_id='$subject', description='$description', created='$created' WHERE id = $id";
+        experience='$experience', subject_id='$subject', description='$description', created='$created', status='$status' WHERE id = $id";
     }
     $result = mysqlj($query);
 
