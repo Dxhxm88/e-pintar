@@ -317,7 +317,7 @@ function getClasses()
 {
     $results = array();
 
-    $query = "SELECT * FROM kelas";
+    $query = "SELECT * FROM kelas ORDER BY name";
     $result = mysqlj($query);
 
     if ($result->num_rows > 0) {
