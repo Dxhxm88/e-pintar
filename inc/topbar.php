@@ -7,6 +7,7 @@
                 <li class="nav-item"><a class="nav-link" href="<?= route('') ?>">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= route('about.php') ?>">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= route('teachers-index.php') ?>">Listed Teachers</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?= route('timetable.php') ?>">Timetable</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= route('contact.php') ?>">Contact</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= route('admin/login.php') ?>">Admin</a></li>
 
