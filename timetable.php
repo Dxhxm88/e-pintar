@@ -54,7 +54,7 @@ if (isset($_POST['submit'])) {
                                 <?php } ?>
                             </select>
                         </div>
-                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" name="submit" class="btn btn-primary">View Timetable</button>
                     </form>
                 </div>
 
